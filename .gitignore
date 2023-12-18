@@ -1,0 +1,9 @@
+logs
+*.log
+
+.nyc_output
+
+node_modules/
+
+
+
