@@ -1,18 +1,15 @@
 const express = require('express');
-
 const indexController = require('../controllers/indexController');
 const { authenticate } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// Log route with authentication middleware
+// GET
 router.get('/:indexName', authenticate, indexController.getIndex);
 router.get('/indexExists/:indexName', indexController.indexExists);
-
+// POST
 router.post('/create', authenticate, indexController.createIndex);
-
+// DELETE
 router.delete('/:indexName', indexController.deleteIndex);
-
-// router.get('/', authenticate, logController.search);
 
 module.exports = router;

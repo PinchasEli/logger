@@ -10,9 +10,8 @@ const client = new Client({
     id: elasticConfig.cloudID,
   },
   auth: {
-    // apiKey:elasticConfig.auth.apiKey
-    username: elasticConfig.auth.username ,//'elastic',
-    password: elasticConfig.auth.password //'5LFHH2RgcoBfFz3JxUQQtNQd'
+    username: elasticConfig.auth.username ,
+    password: elasticConfig.auth.password
   },
 });
 

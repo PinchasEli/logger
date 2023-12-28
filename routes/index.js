@@ -1,10 +1,3 @@
-// // Routes
-// app.use('/logs', logRoutes);
-// app.use('/index', indexRoutes);
-// app.use('/document', documentRoutes);
-// app.use('/search', searchRoutes);
-
-// routes/index.js
 const express = require('express');
 const router = express.Router();
 

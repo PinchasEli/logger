@@ -31,14 +31,14 @@ class LoggerService {
     async createIndex(indexData) {
         try {
             const response = await this.client.indices.create({
-              index: indexData.name,
-              body: {
-                mappings: {
-                  properties: {
-                    ...indexData.properties,
-                  }
+                index: indexData.name,
+                body: {
+                    mappings: {
+                    properties: {
+                        ...indexData.properties,
+                    }
+                    },
                 },
-              },
             });
         
             console.log(`Index "${indexData.name}" created. Response:`, response);
@@ -49,7 +49,6 @@ class LoggerService {
                 return { code: 404, message: error?.message };
             } else {
                 console.log('error :>> ', error?.message);
-                console.error('Error creating index:', error);
                 return { code: 400, message: error?.message };
             }
         }
@@ -95,9 +94,7 @@ class LoggerService {
 
     // log
     async sendLog() {
-        if (this.logs.length === 0) {
-            return;
-        }
+        if (this.logs.length === 0) return;
         
         try {
             const bulkResponse = await this.client.bulk({
@@ -113,18 +110,18 @@ class LoggerService {
                 // The presence of the `error` key indicates that the operation
                 // that we did for the document has failed.
                 bulkResponse.items.forEach((action, i) => {
-                  const operation = Object.keys(action)[0]
-                  if (action[operation].error) {
-                    erroredDocuments.push({
-                      // If the status is 429 it means that you can retry the document,
-                      // otherwise it's very likely a mapping error, and you should
-                      // fix the document before to try it again.
-                      status: action[operation].status,
-                      error: action[operation].error,
-                      operation: operations[i * 2],
-                      document: operations[i * 2 + 1]
-                    })
-                  }
+                    const operation = Object.keys(action)[0]
+                    if (action[operation].error) {
+                            erroredDocuments.push({
+                            // If the status is 429 it means that you can retry the document,
+                            // otherwise it's very likely a mapping error, and you should
+                            // fix the document before to try it again.
+                            status: action[operation].status,
+                            error: action[operation].error,
+                            operation: operations[i * 2],
+                            document: operations[i * 2 + 1]
+                        })
+                    }
                 })
                 console.log(erroredDocuments)
             }
@@ -144,10 +141,8 @@ class LoggerService {
         this.logs.push({ index: { _index: indexName } });
         this.logs.push({ level, message, timestamp: new Date().toISOString() });
 
-        if (this.logs.length < this.bulkThreshold) {
-            return;
-        }
-        // this.logs = this.logs.flatMap((log) => [{ index: { _index: indexName } }, log])
+        if (this.logs.length < this.bulkThreshold) return;
+
         this.sendLog();
     }
 
