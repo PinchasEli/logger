@@ -44,9 +44,9 @@ class LoggerService {
             console.log(`Index "${indexData.name}" created. Response:`, response);
             return { code: 200, data: { ...response } };
         } catch (error) {
-            if (error.meta && error.meta.statusCode === 400) {
+            if (error.meta && error.meta.statusCode === 404) {
                 console.error('Error creating index. Check your index properties:', error.message);
-                return { code: 404, message: error?.message };
+                return { code: error.meta.statusCode, message: error?.message };
             } else {
                 console.log('error :>> ', error?.message);
                 return { code: 400, message: error?.message };
@@ -141,9 +141,11 @@ class LoggerService {
         this.logs.push({ index: { _index: indexName } });
         this.logs.push({ level, message, timestamp: new Date().toISOString() });
 
-        if (this.logs.length < this.bulkThreshold) return;
+        if (this.logs.length < this.bulkThreshold) {
+            return { code: 200, data: countInBuffer: this.logs.length };
+        }
 
-        this.sendLog();
+        return this.sendLog();
     }
 
     // Search
@@ -187,7 +189,7 @@ class LoggerService {
             console.error('Error getting document by ID:', error.message);
             return { code: 400, message: error?.message };
         }
-      }
+    }
 }
 
 

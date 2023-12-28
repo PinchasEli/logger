@@ -13,7 +13,8 @@ const logError = (req, res) => {
   const { index, message } = req.body;
   const response = loggerService.createLog('error', index, message);
 
-  res.json({ success: true, message: response?.message || '' });
+  // res.json({ success: true, message: response?.message || '' });
+  res.jsonResponse(response?.code == 200, response?.data, response?.message, response?.code);
 }
 
 module.exports = { logInfo, logError };

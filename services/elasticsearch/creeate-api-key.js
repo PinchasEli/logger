@@ -2,20 +2,20 @@ const client = require('./client');
 
 async function generateApiKeys(opts) {
     const body = await client.security.createApiKey({
-    body: {
-        name: 'salesLogger_key',
-        role_descriptors: {
-        earthquakes_example_writer: {
-            cluster: ['monitor'],
-            index: [
-            {
-                names: ['earthquakes'],
-                privileges: ['create_index', 'write', 'read', 'manage'],
+        body: {
+            name: 'salesLogger_key',
+            role_descriptors: {
+                earthquakes_example_writer: {
+                    cluster: ['monitor'],
+                    index: [
+                    {
+                        names: ['earthquakes'],
+                        privileges: ['create_index', 'write', 'read', 'manage'],
+                    },
+                    ],
+                },
             },
-            ],
         },
-        },
-    },
     });
 
     console.log('body :>> ', body);
