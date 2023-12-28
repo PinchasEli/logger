@@ -20,17 +20,15 @@ const port = process.env.PORT || 3000;
 mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const client = require('./services/elasticsearch/client');
+const routes = require('./routes');
 
 // Middleware
 app.use(bodyParser.json());
 app.use(jsonResponseMiddleware);
 
 
-// Routes
-app.use('/logs', logRoutes);
-app.use('/index', indexRoutes);
-app.use('/document', documentRoutes);
-app.use('/search', searchRoutes);
+app.use('/', routes);
+
 
 // Start the server
 app.listen(port, () => {
